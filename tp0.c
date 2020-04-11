@@ -6,53 +6,56 @@
  */
 
 #include "tp0.h"
+#define PACKAGESIZE 1024
 
 int main(void)
 {
-	/*---------------------------------------------------PARTE 2-------------------------------------------------------------*/
 	int conexion;
 	char* ip;
 	char* puerto;
 
 	t_log* logger;
 	t_config* config;
-
 	logger = iniciar_logger();
 
-	//Loggear "soy un log"
+	log_info(logger, "Empieza.");
 
 	config = leer_config();
 
+	puerto = config_get_string_value(config, "PUERTO");
+	ip = config_get_string_value(config, "IP");
 
-	/*---------------------------------------------------PARTE 3-------------------------------------------------------------*/
+	conexion = crear_conexion(ip, puerto);
 
-	//antes de continuar, tenemos que asegurarnos que el servidor esté corriendo porque lo necesitaremos para lo que sigue.
+	if(conexion == 0){
+		log_info(logger, "No se pudo conectar al servidor.");
+		return 0;
+	}
 
-	//crear conexion
+	log_info(logger, "Se envía un mensaje.");
+	enviar_mensaje("Hola", conexion);
 
-	//enviar mensaje
+	char* mensajeRecibido = recibir_mensaje(conexion);
 
-	//recibir mensaje
-
-	//loguear mensaje recibido
+	log_info(logger, mensajeRecibido);
+	log_info(logger, "Termina");
 
 	terminar_programa(conexion, logger, config);
 }
 
-//TODO
 t_log* iniciar_logger(void)
 {
-
+	return log_create("tp0.log", "client", true, LOG_LEVEL_INFO);
 }
 
-//TODO
 t_config* leer_config(void)
 {
-
+	return config_create("tp0.config");
 }
 
-//TODO
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
-	//Y por ultimo, para cerrar, hay que liberar lo que utilizamos (conexion, log y config) con las funciones de las commons y del TP mencionadas en el enunciado
+	log_destroy(logger);
+	config_destroy(config);
+	liberar_conexion(conexion);
 }
