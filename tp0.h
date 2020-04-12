@@ -21,5 +21,6 @@
 t_log* iniciar_logger(void);
 t_config* leer_config(void);
 void terminar_programa(int, t_log*, t_config*);
+void terminar_programa_ante_desconexion_servidor(t_log* logger, t_config* config);
 
 #endif /* TP0_H_ */
