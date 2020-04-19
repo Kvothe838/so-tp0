@@ -151,3 +151,44 @@ R		
 [INFO] 11:39:04:690 client/(4927:4927): IP: 127.0.0.1 | PUERTO: 4444
 
 [INFO] 11:39:04:711 client/(4927:4927): No se pudo conectar al servidor.
+[INFO] 14:08:04:69 client/(6458:6458): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:08:04:100 client/(6458:6458): No se pudo conectar al servidor.
+[INFO] 14:08:18:440 client/(6464:6464): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:08:18:470 client/(6464:6464): No se pudo conectar al servidor.
+[INFO] 14:43:23:376 client/(7657:7657): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:43:41:165 client/(7665:7665): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:47:03:662 client/(8076:8076): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:47:03:723 client/(8076:8076): Mensaje recibido: Hola
+[INFO] 14:47:03:725 client/(8076:8076): Termina
+[INFO] 14:47:11:478 client/(8084:8084): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:47:24:624 client/(8100:8100): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:47:31:52 client/(8107:8107): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:47:31:87 client/(8107:8107): Mensaje recibido: Hola
+[INFO] 14:47:31:90 client/(8107:8107): Termina
+[INFO] 14:48:43:481 client/(8140:8140): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:48:43:515 client/(8140:8140): Mensaje recibido: Hola
+[INFO] 14:48:43:518 client/(8140:8140): Termina
+[INFO] 14:51:00:494 client/(8211:8211): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:51:11:177 client/(8222:8222): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:51:11:211 client/(8222:8222): Mensaje recibido: Hola
+[INFO] 14:51:11:213 client/(8222:8222): Termina
+[INFO] 14:54:11:52 client/(8280:8280): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:54:11:57 client/(8280:8280): Mensaje recibido: Hola
+[INFO] 14:54:17:616 client/(8286:8286): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 14:54:17:654 client/(8286:8286): Mensaje recibido: Hola
+[INFO] 15:00:03:566 client/(8350:8350): IP: 127.0.0.1 | PUERTO: 4444
+
+[INFO] 15:00:03:602 client/(8350:8350): Mensaje recibido: Hola

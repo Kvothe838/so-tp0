@@ -34,20 +34,17 @@ int main(void)
 
 	if(conexion == 0){
 		log_info(logger, "No se pudo conectar al servidor.");
-		terminar_programa_ante_desconexion_servidor(logger, config);
-		return 1;
+		terminar_programa(conexion, logger, config);
+		exit(4);
 	}
 
-	log_info(logger, "Se envía un mensaje.");
 	enviar_mensaje("Hola", conexion);
 
 	char* mensajeRecibido = recibir_mensaje(conexion);
 
-	log_info(logger, mensajeRecibido);
+	log_info(logger, "Mensaje recibido: %s", mensajeRecibido);
 
 	free(mensajeRecibido);
-
-	log_info(logger, "Termina");
 
 	terminar_programa(conexion, logger, config);
 }
@@ -86,10 +83,7 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 		config_destroy(config);
 	}
 
-	liberar_conexion(conexion);
-}
-
-void terminar_programa_ante_desconexion_servidor(t_log* logger, t_config* config){
-	log_destroy(logger);
-	config_destroy(config);
+	if(conexion > 0){
+		liberar_conexion(conexion);
+	}
 }
