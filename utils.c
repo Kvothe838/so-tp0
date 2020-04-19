@@ -1,15 +1,8 @@
-/*
- * conexiones.c
- *
- *  Created on: 2 mar. 2019
- *      Author: utnso
- */
-
 #include "utils.h"
 
 void* serializar_paquete(t_paquete* paquete, int *bytes)
 {
-	*bytes = sizeof(op_code) + sizeof(paquete->buffer->size) + paquete->buffer->size;
+	*bytes = sizeof(paquete->codigo_operacion) + sizeof(paquete->buffer->size) + paquete->buffer->size;
 	void* a_enviar = malloc(*bytes);
 	int offset = 0;
 
@@ -18,9 +11,7 @@ void* serializar_paquete(t_paquete* paquete, int *bytes)
 	memcpy(a_enviar + offset, &(paquete->buffer->size), sizeof(paquete->buffer->size));
 	offset += sizeof(paquete->buffer->size);
 	memcpy(a_enviar + offset, paquete->buffer->stream, paquete->buffer->size);
-
-	free(paquete->buffer);
-	free(paquete);
+	offset += paquete->buffer->size;
 
 	return a_enviar;
 }
@@ -50,6 +41,7 @@ int crear_conexion(char *ip, char* puerto)
 
 void enviar_mensaje(char* mensaje, int socket_cliente)
 {
+	int tamanioMensaje = strlen(mensaje) + 1;
 	int bytes = 0;
 	void* mensaje_serializado;
 	t_paquete* paquete = malloc(sizeof(t_paquete));
@@ -57,33 +49,33 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 	paquete->codigo_operacion = MENSAJE;
 	paquete->buffer = malloc(sizeof(t_buffer));
 	paquete->buffer->stream = mensaje;
-	paquete->buffer->size = sizeof(mensaje) + 1;
+	paquete->buffer->size = tamanioMensaje;
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+	memcpy(paquete->buffer->stream, mensaje, tamanioMensaje);
 	mensaje_serializado = serializar_paquete(paquete, &bytes);
+
+	free(paquete->buffer->stream);
+	free(paquete->buffer);
+	free(paquete);
 
 	if(send(socket_cliente, mensaje_serializado, bytes, 0) == -1){
 		printf("Error enviando mensaje.");
-		free(mensaje_serializado);
+		free(mensaje_serializado); //TODO Ver cómo evitar redundancia de código y avisarle al usuario que hubo un error.
 		exit(5);
 	}
-
+	
 	free(mensaje_serializado);
 }
 
 char* recibir_mensaje(int socket_cliente)
 {
 	op_code codigo_operacion;
-	char* mensaje = "";
-	void* buffer;
+	char* buffer;
 	int size;
-	int resultado_recv = recv(socket_cliente, &codigo_operacion, sizeof(int), 0);
 
-	switch(resultado_recv){
-		case 0:
-			printf("Desconexión.\n");
-			return mensaje;
-		case -1:
-			printf("Error al recibir codigo_operacion.\n");
-			return mensaje;
+	if(recv(socket_cliente, &codigo_operacion, sizeof(int), 0) <= 0){
+		printf("Error recibiendo mensaje.\n");
+		return NULL;
 	}
 
 	switch(codigo_operacion) {
@@ -91,14 +83,13 @@ char* recibir_mensaje(int socket_cliente)
 	    	recv(socket_cliente, &size, sizeof(int), 0);
 			buffer = malloc(size);
 			recv(socket_cliente, buffer, size, 0);
-	        mensaje = (char*)buffer;
 	        break;
 	    default:
-	    	printf("Alto fail, codigo_operacion diferente.\n");
-	    	break;
+	    	printf("Error: código no válido.\n");
+			return NULL;
 	}
 
-	return mensaje;
+	return buffer;
 }
 
 void liberar_conexion(int socket_cliente)

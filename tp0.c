@@ -42,10 +42,11 @@ int main(void)
 
 	char* mensajeRecibido = recibir_mensaje(conexion);
 
-	log_info(logger, "Mensaje recibido: %s", mensajeRecibido);
-
-	free(mensajeRecibido);
-
+	if(mensajeRecibido != NULL){
+		log_info(logger, "Mensaje recibido: %s", mensajeRecibido);
+		free(mensajeRecibido);
+	}
+	
 	terminar_programa(conexion, logger, config);
 }
 
