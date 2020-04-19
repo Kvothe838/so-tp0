@@ -16,14 +16,19 @@ int main(void)
 
 	t_log* logger;
 	t_config* config;
+
 	logger = iniciar_logger();
-
-	log_info(logger, "Empieza.");
-
 	config = leer_config();
 
 	puerto = config_get_string_value(config, "PUERTO");
 	ip = config_get_string_value(config, "IP");
+
+	if(puerto == NULL || ip == NULL){
+		printf("Error leyendo puerto o ip.");
+		return(3);
+	}
+
+	log_info(logger, "IP: %s | PUERTO: %s\n", ip, puerto);
 
 	conexion = crear_conexion(ip, puerto);
 
@@ -49,18 +54,38 @@ int main(void)
 
 t_log* iniciar_logger(void)
 {
-	return log_create("tp0.log", "client", true, LOG_LEVEL_INFO);
+	t_log* logger;
+
+	if((logger = log_create("tp0.log", "client", true, LOG_LEVEL_INFO)) == NULL){
+		printf("Error al crear el logger.");
+		exit(1);
+	}
+
+	return logger;
 }
 
 t_config* leer_config(void)
 {
-	return config_create("tp0.config");
+	t_config* config;
+
+	if((config = config_create("tp0.config")) == NULL){
+		printf("Error leyendo configuración.");
+		exit(2);
+	}
+
+	return config;
 }
 
 void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
-	log_destroy(logger);
-	config_destroy(config);
+	if(logger != NULL){
+		log_destroy(logger);
+	}
+
+	if(config != NULL){
+		config_destroy(config);
+	}
+
 	liberar_conexion(conexion);
 }
 
